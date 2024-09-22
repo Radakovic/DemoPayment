@@ -16,8 +16,10 @@
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
+        "symfony/form": "7.1.*",
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
+        "symfony/twig-bundle": "7.1.*",
         "symfony/yaml": "7.1.*"
     },
     "require-dev": {
@@ -26,7 +28,9 @@
         "symfony/browser-kit": "7.1.*",
         "symfony/css-selector": "7.1.*",
         "symfony/maker-bundle": "^1.61",
-        "symfony/phpunit-bridge": "^7.1"
+        "symfony/phpunit-bridge": "^7.1",
+        "symfony/stopwatch": "7.1.*",
+        "symfony/web-profiler-bundle": "7.1.*"
     },
     "config": {
         "allow-plugins": {

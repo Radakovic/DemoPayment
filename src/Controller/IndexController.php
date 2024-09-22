@@ -13,6 +13,6 @@ class IndexController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        return $this->json(['data' => 'Djes Radujisa!!!']);
+        return $this->render('base.html.twig');
     }
 }
