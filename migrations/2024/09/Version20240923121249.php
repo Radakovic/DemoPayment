@@ -31,6 +31,6 @@ final class Version20240923121249 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TYPE payment.invoice_status');
+        $this->addSql('DROP TYPE invoice_status');
     }
 }
