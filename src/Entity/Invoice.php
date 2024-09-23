@@ -33,7 +33,7 @@ class Invoice
         private string $response,
         #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
         private DateTimeImmutable $expirationDate,
-        #[ORM\Column(type: 'string', enumType: InvoiceStatusEnum::class)]
+        #[ORM\Column(type: 'invoice_status', nullable: false)]
         private InvoiceStatusEnum $status,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]

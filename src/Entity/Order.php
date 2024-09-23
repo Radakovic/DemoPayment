@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(schema: 'payment')]
+#[ORM\Entity(repositoryClass: OrderRepository::class)]
 class Order
 {
     use CreateAndUpdatedAtTrait;
