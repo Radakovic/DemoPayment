@@ -15,7 +15,7 @@ class OrderFactory extends AbstractFactory
         ?string $currency = null,
     ): Order {
         $id = $id ?? Uuid::uuid4();
-        $amount = $amount ?? $this->faker->randomNumber(4, true);
+        $amount = $amount ?? $this->faker->randomNumber(5, true);
         $country = $country ?? $this->faker->randomElement(['US', 'RS']);
         $currency = $currency ?? $country === 'US' ? 'USD' : 'RSD';
 
