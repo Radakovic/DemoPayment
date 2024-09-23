@@ -24,16 +24,16 @@ class Order
         private string $country,
         #[ORM\Column(length: 10)]
         private string $currency,
+        #[ORM\Id]
+        #[ORM\Column(type: 'uuid', unique: true)]
+        private ?UuidInterface $id = null,
         #[ORM\OneToOne(
             targetEntity: Invoice::class,
             mappedBy: 'order',
             cascade: ['persist', 'remove'],
             orphanRemoval: true,
         )]
-        private ?Invoice $invoice,
-        #[ORM\Id]
-        #[ORM\Column(type: 'uuid', unique: true)]
-        private ?UuidInterface $id,
+        private ?Invoice $invoice = null,
     ) {
         $this->id = $id ?? Uuid::uuid4();
     }
