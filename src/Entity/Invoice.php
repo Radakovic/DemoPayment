@@ -35,6 +35,12 @@ class Invoice
         private DateTimeImmutable $expirationDate,
         #[ORM\Column(type: 'invoice_status', nullable: false)]
         private InvoiceStatusEnum $status,
+        #[ORM\OneToOne(
+            targetEntity: Order::class,
+            inversedBy: 'invoice',
+            orphanRemoval: true,
+        )]
+        private Order $order,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
         private ?UuidInterface $id,
@@ -137,5 +143,13 @@ class Invoice
     public function setStatus(InvoiceStatusEnum $status): void
     {
         $this->status = $status;
+    }
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
+    public function setOrder(Order $order): void
+    {
+        $this->order = $order;
     }
 }

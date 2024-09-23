@@ -24,6 +24,13 @@ class Order
         private string $country,
         #[ORM\Column(length: 10)]
         private string $currency,
+        #[ORM\OneToOne(
+            targetEntity: Invoice::class,
+            mappedBy: 'order',
+            cascade: ['persist', 'remove'],
+            orphanRemoval: true,
+        )]
+        private ?Invoice $invoice,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
         private ?UuidInterface $id,
@@ -64,5 +71,14 @@ class Order
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
+    }
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(?Invoice $invoice): void
+    {
+        $this->invoice = $invoice;
     }
 }
