@@ -17,5 +17,10 @@ fi
     echo "######################################"
     php bin/console doctrine:migrations:migrate -n
 
+    echo "######################################"
+    echo "Execute fixtures load ..."
+    echo "######################################"
+    php bin/console doctrine:fixtures:load -n
+
 # Start PHP-FPM (this replaces the CMD in Dockerfile)
 php-fpm
