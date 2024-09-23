@@ -1,6 +1,7 @@
 # Use PHP 8.3 FPM as the base image
 FROM php:8.3-fpm
 ARG USER=www-data
+ARG USER
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 # Install system dependencies for PHP extensions

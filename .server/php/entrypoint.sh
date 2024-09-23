@@ -12,3 +12,6 @@ fi
 
 # Start PHP-FPM (this replaces the CMD in Dockerfile)
 php-fpm
+
+echo "Execute migrations ..."
+php bin/console doctrine:migrations:migrate -n
