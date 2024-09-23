@@ -19,7 +19,7 @@ final class Version20240923121249 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("CREATE TYPE payment.invoice_status AS ENUM (
+        $this->addSql("CREATE TYPE invoice_status AS ENUM (
             'CREATED',
             'PENDING',
             'SUCCESSFUL',

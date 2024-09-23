@@ -27,7 +27,7 @@ final class Version20240923121513 extends AbstractMigration
             request JSON NOT NULL,
             response JSON NOT NULL,
             expiration_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-            status payment.invoice_status NOT NULL,
+            status invoice_status NOT NULL,
             description TEXT DEFAULT NULL,
             created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
             updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
@@ -35,7 +35,7 @@ final class Version20240923121513 extends AbstractMigration
             PRIMARY KEY(id))'
         );
         $this->addSql('COMMENT ON COLUMN payment.invoice.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN payment.invoice.status IS \'(DC2Type:payment.invoice_status)\'');
+        $this->addSql('COMMENT ON COLUMN payment.invoice.status IS \'(DC2Type:invoice_status)\'');
         $this->addSql('COMMENT ON COLUMN payment.invoice.expiration_date IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN payment.invoice.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN payment.invoice.updated_at IS \'(DC2Type:datetime_immutable)\'');

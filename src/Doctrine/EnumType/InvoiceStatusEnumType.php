@@ -13,7 +13,7 @@ class InvoiceStatusEnumType extends AbstractEnumType
 
     public function getPostgresName(): string
     {
-        return 'payment.invoice_status';
+        return 'invoice_status';
     }
 
     public function getName(): string
