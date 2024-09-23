@@ -17,7 +17,8 @@ class OrderFixtures extends Fixture
         $factory = $this->orderFactory;
 
         for ($i = 0; $i < 10; ++$i) {
-            $factory();
+            $order = $factory();
+            $manager->persist($order);
         }
 
         $manager->flush();

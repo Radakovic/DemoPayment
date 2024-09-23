@@ -16,19 +16,14 @@ class OrderFactory extends AbstractFactory
     ): Order {
         $id = $id ?? Uuid::uuid4();
         $amount = $amount ?? $this->faker->randomNumber(4, true);
-        $country = $country ?? 'US';
-        $currency = $currency ?? 'USD';
+        $country = $country ?? $this->faker->randomElement(['US', 'RS']);
+        $currency = $currency ?? $country === 'US' ? 'USD' : 'RSD';
 
-        $order = new Order(
+        return new Order(
             amount: $amount,
             country: $country,
             currency: $currency,
             id: $id
         );
-
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-
-        return $order;
     }
 }
