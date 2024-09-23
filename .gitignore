@@ -19,3 +19,8 @@ junit.xml
 clover.xml
 cobertura.xml
 ### code coverage ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###

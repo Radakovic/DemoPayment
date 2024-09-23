@@ -14,6 +14,8 @@
         "fakerphp/faker": "^1.23",
         "gedmo/doctrine-extensions": "^3.16",
         "ramsey/uuid-doctrine": "^2.1",
+        "symfony/asset": "7.1.*",
+        "symfony/asset-mapper": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
@@ -21,7 +23,9 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/yaml": "7.1.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.11",
@@ -65,7 +69,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts",
