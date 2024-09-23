@@ -19,7 +19,7 @@ class Order
 
     public function __construct(
         #[ORM\Column(type: Types::BIGINT)]
-        private string $amount,
+        private int $amount,
         #[ORM\Column(length: 10)]
         private string $country,
         #[ORM\Column(length: 10)]
@@ -36,12 +36,12 @@ class Order
         return $this->id;
     }
 
-    public function getAmount(): string
+    public function getAmount(): int
     {
         return $this->amount;
     }
 
-    public function setAmount(string $amount): void
+    public function setAmount(int $amount): void
     {
         $this->amount = $amount;
     }
