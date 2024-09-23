@@ -20,13 +20,6 @@ class Invoice
     use DeletedAtTrait;
 
     public function __construct(
-        #[ORM\Column(type: Types::BIGINT)]
-        private int $amount,
-        #[ORM\Column(type: Types::STRING, length: 10)]
-        private string $country,
-        #[ORM\Column(type: Types::STRING, length: 10)]
-        private string $currency,
-        #[ORM\Column(type: Types::JSON)]
         private string $payer,
         #[ORM\Column(type: Types::STRING)]
         private string $payment_method,
@@ -54,36 +47,6 @@ class Invoice
     public function getId(): UuidInterface
     {
         return $this->id;
-    }
-
-    public function getAmount(): int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): void
-    {
-        $this->amount = $amount;
-    }
-
-    public function getCountry(): string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): void
-    {
-        $this->country = $country;
-    }
-
-    public function getCurrency(): string
-    {
-        return $this->currency;
-    }
-
-    public function setCurrency(string $currency): void
-    {
-        $this->currency = $currency;
     }
 
     public function getPayer(): string
