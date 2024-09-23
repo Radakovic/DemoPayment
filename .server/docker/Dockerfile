@@ -8,6 +8,10 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions amqp bcmath gd intl opcache pdo_mysql pdo_pgsql sockets xsl zip xdebug pcov
 
+RUN docker-php-ext-enable xdebug \
+    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 # Install Composer globally
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

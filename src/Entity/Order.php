@@ -19,11 +19,11 @@ class Order
 
     public function __construct(
         #[ORM\Column(type: Types::BIGINT)]
-        private int $amount,
+        private ?int $amount = null,
         #[ORM\Column(length: 10)]
-        private string $country,
+        private ?string $country = null,
         #[ORM\Column(length: 10)]
-        private string $currency,
+        private ?string $currency = null,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
         private ?UuidInterface $id = null,

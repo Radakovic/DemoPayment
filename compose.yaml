@@ -13,6 +13,8 @@ services:
                 condition: service_healthy
         networks:
             app-network:
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     nginx:
         image: nginx:alpine
         ports:
@@ -24,6 +26,8 @@ services:
             - php
         networks:
             app-network:
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     postgres:
         image: postgres:${POSTGRES_VERSION:-16}-alpine
         ports:

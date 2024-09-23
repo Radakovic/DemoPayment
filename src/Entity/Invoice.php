@@ -20,32 +20,34 @@ class Invoice
     use DeletedAtTrait;
 
     public function __construct(
-        private string $payer,
+        #[ORM\Column(type: Types::JSON)]
+        private ?string $payer = null,
         #[ORM\Column(type: Types::STRING)]
-        private string $payment_method,
+        private ?string $paymentMethod = null,
         #[ORM\Column(type: Types::STRING)]
-        private string $clientIp,
+        private ?string $clientIp = null,
         #[ORM\Column(type: 'string')]
-        private string $notificationUrl,
+        private ?string $notificationUrl = null,
         #[ORM\Column(type: Types::JSON)]
-        private string $request,
+        private ?string $request = null,
         #[ORM\Column(type: Types::JSON)]
-        private string $response,
+        private ?string $response = null,
         #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-        private DateTimeImmutable $expirationDate,
+        private ?DateTimeImmutable $expirationDate = null,
         #[ORM\Column(type: 'invoice_status', nullable: false)]
-        private InvoiceStatusEnum $status,
+        private ?InvoiceStatusEnum $status = null,
         #[ORM\OneToOne(
             targetEntity: Order::class,
             inversedBy: 'invoice',
             orphanRemoval: true,
         )]
-        private Order $order,
+        //#[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
+        private ?Order $order = null,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
-        private ?UuidInterface $id,
+        private ?UuidInterface $id = null,
         #[ORM\Column(type: Types::TEXT, nullable: true)]
-        private ?string $description,
+        private ?string $description = null,
     ) {
         $this->id = $id  ?? Uuid::uuid4();
     }
@@ -67,12 +69,12 @@ class Invoice
 
     public function getPaymentMethod(): string
     {
-        return $this->payment_method;
+        return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $payment_method): void
+    public function setPaymentMethod(string $paymentMethod): void
     {
-        $this->payment_method = $payment_method;
+        $this->paymentMethod = $paymentMethod;
     }
 
     public function getDescription(): ?string
@@ -144,7 +146,7 @@ class Invoice
     {
         $this->status = $status;
     }
-    public function getOrder(): Order
+    public function getOrder(): ?Order
     {
         return $this->order;
     }
