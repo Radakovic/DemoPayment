@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.11",
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "7.1.*",
         "symfony/css-selector": "7.1.*",
