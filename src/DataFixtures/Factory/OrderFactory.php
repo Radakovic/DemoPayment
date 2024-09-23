@@ -3,25 +3,17 @@
 namespace App\DataFixtures\Factory;
 
 use App\Entity\Order;
-use Doctrine\ORM\EntityManagerInterface;
-use Faker\Generator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-readonly class OrderFactory
+class OrderFactory extends AbstractFactory
 {
-    public function __construct(
-        public Generator $faker,
-        public EntityManagerInterface $entityManager,
-    ) {
-    }
-
     public function __invoke(
         ?UuidInterface $id = null,
         ?int $amount = null,
         ?string $country = null,
         ?string $currency = null,
-    ): void {
+    ): Order {
         $id = $id ?? Uuid::uuid4();
         $amount = $amount ?? $this->faker->randomNumber(4, true);
         $country = $country ?? 'US';
@@ -35,5 +27,8 @@ readonly class OrderFactory
         );
 
         $this->entityManager->persist($order);
+        $this->entityManager->flush();
+
+        return $order;
     }
 }

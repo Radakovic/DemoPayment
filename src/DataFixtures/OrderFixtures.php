@@ -14,7 +14,12 @@ class OrderFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $factory = new OrderFactory();
+        $factory = $this->orderFactory;
+
+        for ($i = 0; $i < 10; ++$i) {
+            $factory();
+        }
+
         $manager->flush();
     }
 }
