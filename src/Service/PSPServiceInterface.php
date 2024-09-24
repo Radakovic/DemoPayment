@@ -4,6 +4,6 @@ namespace App\Service;
 
 interface PSPServiceInterface
 {
-    public function postInvoice(array $requestBody): array;
+    public function postInvoice(string $requestBody): array;
     public function signData(string $body): string;
 }

@@ -2,10 +2,25 @@
 
 {% block body %}
     <div class="container">
-        <h1>Create invoice</h1>
-        <div class="w-50 p-3">
-            {{ form(form) }}
+        <div class="row mb-4 mt-4">
+            <h1>Invoice No: {{ invoiceId }}</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>Payment info</h3>
+                <p>Order ID: {{ invoice.merchantOrderId }}</p>
+                <p>Description: {{ invoice.paymentInfo.metadata.description }}</p>
+                <p>Payment method: {{ invoice.paymentInfo.payment_method }}</p>
+                <p>Amount: {{ invoice.paymentInfo.amount | format_currency(invoice.paymentInfo.currency) }}</p>
+                <p>Expiration Date: {{ invoice.paymentInfo.expiration_date.date | date }}</p>
+                <p>Code: {{ invoice.paymentInfo.metadata.code_to_display_or_copy }}</p>
+            </div>
+            <div class="col">
+                <img id="img.base-64" src="{{ invoice.paymentInfo.metadata.qr_code }}"  alt="qr code"/>
+            </div>
+        </div>
+        <div class="row">
+            <a href="{{ path('create_invoice') }}">Back to orders</a>
         </div>
     </div>
-
 {% endblock %}

@@ -4,28 +4,36 @@ namespace App\Controller\Payment;
 
 use App\Entity\Invoice;
 use App\Entity\MerchantOrder;
-use App\Form\InvoiceType;
+use App\Enum\InvoiceStatusEnum;
 use App\Form\MerchantOrderType;
+use App\Model\InvoiceResponseModel;
 use App\Repository\MerchantOrderRepository;
 use App\Service\PSPServiceInterface;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class InvoiceController extends AbstractController
 {
     public function __construct(
         private readonly MerchantOrderRepository $orderRepository,
-        private readonly PSPServiceInterface     $pspService
+        private readonly PSPServiceInterface     $pspService,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
-    #[Route('/', name: 'create', methods: ['GET', 'POST'])]
+    #[Route('/', name: 'create_invoice', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
-        $orders = $this->orderRepository->findAll();
+        $orders = $this->orderRepository->findby([
+            'invoice' => null
+        ]);
         $order = $orders[0];
         assert($order instanceof MerchantOrder);
 
@@ -34,7 +42,9 @@ class InvoiceController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $orderForm = $form->getData();
+            $invoice = $orderForm->getInvoice();
             assert($orderForm instanceof MerchantOrder);
+            assert($invoice instanceof Invoice);
             $payer = $form->get('payer')->getData();
 
             $requestBody = [
@@ -55,28 +65,40 @@ class InvoiceController extends AbstractController
                 "notification_url" => "https://www.your_domain.com/your/notification/url"
             ];
 
-//            $invoiceForm = $form->getData();
-//            $payer = json_encode($form->get('payer')->getData(), JSON_THROW_ON_ERROR);
-//            $invoice->setPayer($payer);
-//            $invoice->setClientIp($request->getClientIp());
-//            $invoice->setExpirationDate(new DateTimeImmutable('+1 day'));
+            $jsonRequest = json_encode($requestBody, JSON_THROW_ON_ERROR);
 
-            $response = $this->pspService->postInvoice($requestBody);
+            $response = $this->pspService->postInvoice($jsonRequest);
 
-            // ... perform some action, such as saving the task to the database
+            $jsonResponse = json_encode($response, JSON_THROW_ON_ERROR);
 
-            //return $this->redirectToRoute('task_success');
+            $invoice->setExpirationDate(new DateTimeImmutable("+1 day"));
+            $invoice->setRequest($jsonRequest);
+            $invoice->setResponse($jsonResponse);
+            $invoice->setOrder($order);
+            $invoice->setStatus(InvoiceStatusEnum::CREATED);
+
+            $this->entityManager->persist($invoice);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('show_invoice', ['id' => $invoice->getId()]);
         }
 
-        return $this->render('/invoice/show.html.twig', [
+        return $this->render('/invoice/create.html.twig', [
             'form' => $form,
         ]);
     }
 
-//    #[Route('/', name: 'handle_form_request', methods: ['POST'])]
-//    public function handleFormRequest(Request $request): Response
-//    {
-//        $request = $request->request->all();
-//        return $this->json(['asd' => 'dasd']);
-//    }
+    #[Route('/invoice/{id}', name: 'show_invoice', methods: ['GET'])]
+    public function show(Invoice $invoice, Request $request): Response
+    {
+        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+        $invoiceData = $serializer->deserialize($invoice->getResponse(), InvoiceResponseModel::class, 'json');
+        return $this->render(
+            'invoice/show.html.twig',
+            [
+                'invoice' => $invoiceData,
+                'invoiceId' => $invoice->getId(),
+            ]
+        );
+    }
 }

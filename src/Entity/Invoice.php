@@ -28,7 +28,7 @@ class Invoice
         private ?string $response = null,
         #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
         private ?DateTimeImmutable $expirationDate = null,
-        #[ORM\Column(type: 'invoice_status', nullable: false)]
+        #[ORM\Column(type: 'string', nullable: false, enumType: InvoiceStatusEnum::class)]
         private ?InvoiceStatusEnum $status = null,
         #[ORM\OneToOne(
             targetEntity: MerchantOrder::class,
