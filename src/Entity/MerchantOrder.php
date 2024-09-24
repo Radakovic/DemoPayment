@@ -4,15 +4,15 @@ namespace App\Entity;
 
 use App\Entity\Traits\CreateAndUpdatedAtTrait;
 use App\Entity\Traits\DeletedAtTrait;
-use App\Repository\OrderRepository;
+use App\Repository\MerchantOrderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Table(schema: 'payment')]
-#[ORM\Entity(repositoryClass: OrderRepository::class)]
-class Order
+#[ORM\Entity(repositoryClass: MerchantOrderRepository::class)]
+class MerchantOrder
 {
     use CreateAndUpdatedAtTrait;
     use DeletedAtTrait;
@@ -29,10 +29,11 @@ class Order
         private ?UuidInterface $id = null,
         #[ORM\OneToOne(
             targetEntity: Invoice::class,
-            mappedBy: 'order',
+            inversedBy: 'order',
             cascade: ['persist', 'remove'],
             orphanRemoval: true,
         )]
+        #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true)]
         private ?Invoice $invoice = null,
     ) {
         $this->id = $id ?? Uuid::uuid4();

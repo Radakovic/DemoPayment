@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\Factory\OrderFactory;
+use App\DataFixtures\Factory\MerchantOrderFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class OrderFixtures extends Fixture
+class MerchantOrderFixtures extends Fixture
 {
-    public function __construct(private readonly OrderFactory $orderFactory)
+    public function __construct(private readonly MerchantOrderFactory $orderFactory)
     {
     }
 

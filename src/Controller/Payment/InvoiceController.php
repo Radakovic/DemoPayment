@@ -3,9 +3,10 @@
 namespace App\Controller\Payment;
 
 use App\Entity\Invoice;
-use App\Entity\Order;
+use App\Entity\MerchantOrder;
 use App\Form\InvoiceType;
-use App\Repository\OrderRepository;
+use App\Form\MerchantOrderType;
+use App\Repository\MerchantOrderRepository;
 use App\Service\PSPServiceInterface;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class InvoiceController extends AbstractController
 {
     public function __construct(
-        private readonly OrderRepository $orderRepository,
-        private readonly PSPServiceInterface $pspService
+        private readonly MerchantOrderRepository $orderRepository,
+        private readonly PSPServiceInterface     $pspService
     ) {
     }
 
@@ -26,23 +27,21 @@ class InvoiceController extends AbstractController
     {
         $orders = $this->orderRepository->findAll();
         $order = $orders[0];
-        assert($order instanceof Order);
+        assert($order instanceof MerchantOrder);
 
-        $invoice = new Invoice();
-        $invoice->setOrder($order);
-        $form = $this->createForm(InvoiceType::class, $invoice);
+        $form = $this->createForm(MerchantOrderType::class, $order);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $invoiceForm = $form->getData();
-            $order = $form->get('order')->getData();
+            $orderForm = $form->getData();
+            assert($orderForm instanceof MerchantOrder);
             $payer = $form->get('payer')->getData();
 
             $requestBody = [
-                "merchant_order_id" => $invoiceForm->getOrder()->getId()->toString(),
-                "amount" => $invoiceForm->getOrder()->getAmount() / 100,
-                "country" => $invoiceForm->getOrder()->getCountry(),
-                "currency" => $invoiceForm->getOrder()->getCurrency(),
+                "merchant_order_id" => $orderForm->getId()->toString(),
+                "amount" => $orderForm->getAmount() / 100,
+                "country" => $orderForm->getCountry(),
+                "currency" => $orderForm->getCurrency(),
                 "payer" => [
                     "document" => $payer['document'],
                     "first_name" => $payer['firstName'],
@@ -50,11 +49,12 @@ class InvoiceController extends AbstractController
                     "phone" => $payer['phone'],
                     "email" => $payer['email'],
                 ],
-                "payment_method" => $invoiceForm->getPaymentMethod(),
-                "description" => $invoiceForm->getDescription(),
+                "payment_method" => $orderForm->getInvoice()?->getPaymentMethod(),
+                "description" => $orderForm->getInvoice()?->getDescription(),
                 "client_ip" => $request->getClientIp(),
                 "notification_url" => "https://www.your_domain.com/your/notification/url"
             ];
+
 //            $invoiceForm = $form->getData();
 //            $payer = json_encode($form->get('payer')->getData(), JSON_THROW_ON_ERROR);
 //            $invoice->setPayer($payer);
@@ -72,4 +72,11 @@ class InvoiceController extends AbstractController
             'form' => $form,
         ]);
     }
+
+//    #[Route('/', name: 'handle_form_request', methods: ['POST'])]
+//    public function handleFormRequest(Request $request): Response
+//    {
+//        $request = $request->request->all();
+//        return $this->json(['asd' => 'dasd']);
+//    }
 }

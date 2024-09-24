@@ -20,14 +20,8 @@ class Invoice
     use DeletedAtTrait;
 
     public function __construct(
-        #[ORM\Column(type: Types::JSON)]
-        private ?string $payer = null,
         #[ORM\Column(type: Types::STRING)]
         private ?string $paymentMethod = null,
-        #[ORM\Column(type: Types::STRING)]
-        private ?string $clientIp = null,
-        #[ORM\Column(type: 'string')]
-        private ?string $notificationUrl = null,
         #[ORM\Column(type: Types::JSON)]
         private ?string $request = null,
         #[ORM\Column(type: Types::JSON)]
@@ -37,12 +31,11 @@ class Invoice
         #[ORM\Column(type: 'invoice_status', nullable: false)]
         private ?InvoiceStatusEnum $status = null,
         #[ORM\OneToOne(
-            targetEntity: Order::class,
-            inversedBy: 'invoice',
+            targetEntity: MerchantOrder::class,
+            mappedBy: 'invoice',
             orphanRemoval: true,
         )]
-        //#[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
-        private ?Order $order = null,
+        private ?MerchantOrder $order = null,
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
         private ?UuidInterface $id = null,
@@ -55,16 +48,6 @@ class Invoice
     public function getId(): UuidInterface
     {
         return $this->id;
-    }
-
-    public function getPayer(): string
-    {
-        return $this->payer;
-    }
-
-    public function setPayer(string $payer): void
-    {
-        $this->payer = $payer;
     }
 
     public function getPaymentMethod(): string
@@ -85,26 +68,6 @@ class Invoice
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getClientIp(): string
-    {
-        return $this->clientIp;
-    }
-
-    public function setClientIp(string $clientIp): void
-    {
-        $this->clientIp = $clientIp;
-    }
-
-    public function getNotificationUrl(): string
-    {
-        return $this->notificationUrl;
-    }
-
-    public function setNotificationUrl(string $notificationUrl): void
-    {
-        $this->notificationUrl = $notificationUrl;
     }
 
     public function getRequest(): string
@@ -146,11 +109,11 @@ class Invoice
     {
         $this->status = $status;
     }
-    public function getOrder(): ?Order
+    public function getOrder(): ?MerchantOrder
     {
         return $this->order;
     }
-    public function setOrder(Order $order): void
+    public function setOrder(MerchantOrder $order): void
     {
         $this->order = $order;
     }

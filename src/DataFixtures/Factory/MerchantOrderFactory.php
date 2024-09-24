@@ -2,24 +2,24 @@
 
 namespace App\DataFixtures\Factory;
 
-use App\Entity\Order;
+use App\Entity\MerchantOrder;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class OrderFactory extends AbstractFactory
+class MerchantOrderFactory extends AbstractFactory
 {
     public function __invoke(
         ?UuidInterface $id = null,
         ?int $amount = null,
         ?string $country = null,
         ?string $currency = null,
-    ): Order {
+    ): MerchantOrder {
         $id = $id ?? Uuid::uuid4();
         $amount = $amount ?? $this->faker->randomNumber(5, true);
         $country = $country ?? $this->faker->randomElement(['US', 'RS']);
         $currency = $currency ?? $country === 'US' ? 'USD' : 'RSD';
 
-        return new Order(
+        return new MerchantOrder(
             amount: $amount,
             country: $country,
             currency: $currency,

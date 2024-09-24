@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Invoice;
-use App\Entity\Order;
+use App\Entity\MerchantOrder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,18 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('order', OrderType::class, [
-//                'mapped' => false,
-//                'data' => 'testsssss'
-            ])
             ->add('paymentMethod', ChoiceType::class, [
-                'priority' => 90,
                 'choices'  => [
                     'Method 1' => 'METHOD 1',
                     'Method 2' => 'METHOD 2',
@@ -36,10 +32,13 @@ class InvoiceType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
-            ])
-            ->add('payer', PayerType::class, [
-                'mapped' => false,
-            ])
-            ->add('submit', SubmitType::class);
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Invoice::class,
+        ]);
     }
 }
