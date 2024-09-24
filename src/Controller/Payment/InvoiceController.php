@@ -6,6 +6,8 @@ use App\Entity\Invoice;
 use App\Entity\Order;
 use App\Form\InvoiceType;
 use App\Repository\OrderRepository;
+use App\Service\PSPServiceInterface;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,17 +17,15 @@ class InvoiceController extends AbstractController
 {
     public function __construct(
         private readonly OrderRepository $orderRepository,
+        private readonly PSPServiceInterface $pspService
     ) {
     }
 
-    #[Route('/', name: 'show', methods: ['GET', 'POST'])]
-    public function show(Request $request): Response
+    #[Route('/', name: 'create', methods: ['GET', 'POST'])]
+    public function create(Request $request): Response
     {
-        // Here should be logic for finding correct order by some parameter
-        // Something like findOneBy(), or find()
-        // Currently im just taking one from fixture data
         $orders = $this->orderRepository->findAll();
-        $order = $orders[array_rand($orders)];
+        $order = $orders[0];
         assert($order instanceof Order);
 
         $invoice = new Invoice();
@@ -35,8 +35,33 @@ class InvoiceController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $invoiceForm = $form->getData();
-            $payer = json_encode($form->get('payer')->getData(), JSON_THROW_ON_ERROR);
-            $invoice->setPayer($payer);
+            $order = $form->get('order')->getData();
+            $payer = $form->get('payer')->getData();
+
+            $requestBody = [
+                "merchant_order_id" => $invoiceForm->getOrder()->getId()->toString(),
+                "amount" => $invoiceForm->getOrder()->getAmount() / 100,
+                "country" => $invoiceForm->getOrder()->getCountry(),
+                "currency" => $invoiceForm->getOrder()->getCurrency(),
+                "payer" => [
+                    "document" => $payer['document'],
+                    "first_name" => $payer['firstName'],
+                    "last_name" => $payer['lastName'],
+                    "phone" => $payer['phone'],
+                    "email" => $payer['email'],
+                ],
+                "payment_method" => $invoiceForm->getPaymentMethod(),
+                "description" => $invoiceForm->getDescription(),
+                "client_ip" => $request->getClientIp(),
+                "notification_url" => "https://www.your_domain.com/your/notification/url"
+            ];
+//            $invoiceForm = $form->getData();
+//            $payer = json_encode($form->get('payer')->getData(), JSON_THROW_ON_ERROR);
+//            $invoice->setPayer($payer);
+//            $invoice->setClientIp($request->getClientIp());
+//            $invoice->setExpirationDate(new DateTimeImmutable('+1 day'));
+
+            $response = $this->pspService->postInvoice($requestBody);
 
             // ... perform some action, such as saving the task to the database
 

@@ -3,8 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Invoice;
+use App\Entity\Order;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,19 +22,10 @@ class InvoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                $invoice = $event->getData();
-                assert($invoice instanceof Invoice);
-                $form = $event->getForm();
-                $form->add('amount', MoneyType::class, [
-                    'currency' => $invoice->getOrder()?->getCurrency() ?? 'USD',
-                    'divisor' => 100,
-                    'mapped' => false,
-                    'data' => $invoice->getOrder()?->getAmount() ?? 0,
-                    'disabled' => true,
-                    'priority' => 100
-                ]);
-            })
+            ->add('order', OrderType::class, [
+//                'mapped' => false,
+//                'data' => 'testsssss'
+            ])
             ->add('paymentMethod', ChoiceType::class, [
                 'priority' => 90,
                 'choices'  => [
@@ -46,7 +41,5 @@ class InvoiceType extends AbstractType
                 'mapped' => false,
             ])
             ->add('submit', SubmitType::class);
-//            ->add('clientIp', TextType::class, [])
-//            ->add('notificationUrl', TextType::class, []);
     }
 }

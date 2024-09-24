@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Invoice;
 use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,14 +20,18 @@ class OrderType extends AbstractType
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $order = $event->getData();
+                assert($order instanceof Order);
                 $form = $event->getForm();
                 $form->add('amount', MoneyType::class, [
                     'currency' => $order->getCurrency(),
-                    'divisor' => 100
+                    'divisor' => 100,
+                    'data' => $order->getAmount(),
+                    'disabled' => true,
                 ]);
             })
-            ->add('country', TextType::class, [])
-            ->add('currency', TextType::class, []);
+            ->add('id', HiddenType::class)
+            ->add('country', HiddenType::class)
+            ->add('currency', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
