@@ -9,7 +9,15 @@ if [ ! -d "vendor" ] || [ -z "$(ls -A vendor)" ]; then
     mkdir -p ./var
     chmod -R a+rwx ./vendor ./var
 else
-    echo "Vendor directory already exists and is not empty."
+    echo "Composer vendor directory already exists and is not empty."
+fi
+if [ ! -d "assets/vendor" ] || [ -z "$(ls -A assets/vendor)" ]; then
+    echo "######################################"
+    echo "Installing Assets dependencies..."
+    echo "######################################"
+    php bin/console importmap:install
+else
+    echo "Assets vendor directory already exists and is not empty."
 fi
 
     echo "######################################"
