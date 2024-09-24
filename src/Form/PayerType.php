@@ -4,7 +4,9 @@ namespace App\Form;
 
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -18,7 +20,7 @@ class PayerType extends AbstractType
             ])
             ->add('firstName', TextType::class, [])
             ->add('lastName', TextType::class, [])
-            ->add('phone', TextType::class, [])
-            ->add('email', TextType::class, []);
+            ->add('phone', TelType::class, [])
+            ->add('email', EmailType::class, []);
     }
 }
