@@ -3,6 +3,7 @@
 namespace App\Controller\Payment;
 
 use App\Entity\Invoice;
+use App\Entity\Order;
 use App\Form\InvoiceType;
 use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,12 @@ class InvoiceController extends AbstractController
     #[Route('/', name: 'show', methods: ['GET'])]
     public function show(): Response
     {
-        $order = $this->orderRepository->findOneBy(['currency' => 'RSD']);
+        // Here should be logic for finding correct order
+        // Currently im just taking one from fixture data
+        $orders = $this->orderRepository->findAll();
+        $order = $orders[array_rand($orders)];
+        assert($order instanceof Order);
+
         $invoice = new Invoice();
         $invoice->setOrder($order);
         $form = $this->createForm(InvoiceType::class, $invoice);
