@@ -14,7 +14,7 @@ final class Version20240924131826 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create invoice, merchant_order database tables';
     }
 
     public function up(Schema $schema): void

@@ -7,10 +7,12 @@ use App\Entity\Traits\DeletedAtTrait;
 use App\Repository\MerchantOrderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Table(schema: 'payment')]
+#[Gedmo\SoftDeleteable(hardDelete: false)]
 #[ORM\Entity(repositoryClass: MerchantOrderRepository::class)]
 class MerchantOrder
 {

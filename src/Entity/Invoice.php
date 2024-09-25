@@ -7,12 +7,16 @@ use App\Entity\Traits\DeletedAtTrait;
 use App\Enum\InvoiceStatusEnum;
 use App\Repository\InvoiceRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Table(schema: 'payment')]
+#[Gedmo\SoftDeleteable(hardDelete: false)]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
 {
@@ -43,8 +47,16 @@ class Invoice
         private ?UuidInterface $id = null,
         #[ORM\Column(type: Types::TEXT, nullable: true)]
         private ?string $description = null,
+        #[ORM\OneToMany(
+            targetEntity: Callback::class,
+            mappedBy: 'invoice',
+            cascade: ['persist'],
+            orphanRemoval: true
+        )]
+        private ?Collection $callbacks = null,
     ) {
         $this->id = $id  ?? Uuid::uuid4();
+        $this->callbacks = $callbacks ?? new ArrayCollection();
     }
 
     public function getId(): UuidInterface
@@ -128,5 +140,23 @@ class Invoice
     public function setNotificationUrl(?string $notificationUrl): void
     {
         $this->notificationUrl = $notificationUrl;
+    }
+
+    public function getCallbacks(): ?Collection
+    {
+        return $this->callbacks;
+    }
+    public function addCallback(Callback $callback): void
+    {
+        if (!$this->callbacks->contains($callback)) {
+            $this->callbacks->add($callback);
+            $callback->setInvoice($this);
+        }
+    }
+    public function removeCallback(Callback $callback): void
+    {
+        if ($this->callbacks->contains($callback)) {
+            $this->callbacks->removeElement($callback);
+        }
     }
 }

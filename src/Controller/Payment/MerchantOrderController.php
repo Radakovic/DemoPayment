@@ -94,6 +94,12 @@ class MerchantOrderController extends AbstractController
         );
     }
 
+    #[Route(path: '/simulation/order/{id}', name: 'simulation', methods: ['GET'])]
+    public function simulation(MerchantOrder $merchantOrder): Response
+    {
+        return $this->render('invoice/error.html.twig');
+    }
+
     private function prepareApiRequest(MerchantOrder $order, Invoice $invoice, $payer, Request $request): array
     {
         $notificationUrl = sprintf('notification/invoice/%s', $invoice->getId()->toString());

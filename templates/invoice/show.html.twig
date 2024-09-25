@@ -24,7 +24,7 @@
                 <a href="{{ path('merchant_order_index') }}">Back to orders</a>
             </div>
             <div class="col">
-                <a href="#">Simulate callback</a>
+                <a href="{{ path('simulation', {'id': invoice.merchant_order_id }) }}">Simulate callback</a>
             </div>
 
         </div>
