@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-4 mt-4">
+            <h1>Orders</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul class="list-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Currency</th>
+                            <th scope="col">Created at</th>
+                            <th scope="col">Invoice</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ (order.amount / 100) | format_currency(order.currency, {fraction_digit: 2}) }}</td>
+                                    <td>{{ order.country | country_name }}</td>
+                                    <td>{{ order.createdAt | date }}</td>
+                                    <td>
+                                        <a href="{{ path('create_invoice', {'id': order.id}) }}">Create invoice</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
