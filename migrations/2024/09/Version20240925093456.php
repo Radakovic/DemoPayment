@@ -22,6 +22,7 @@ final class Version20240925093456 extends AbstractMigration
         $this->addSql('CREATE TABLE payment.callback (
             id UUID NOT NULL,
             invoice_id UUID DEFAULT NULL,
+            request JSON NOT NULL,
             response JSON NOT NULL,
             created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
             updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,

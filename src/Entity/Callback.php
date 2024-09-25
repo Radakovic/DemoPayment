@@ -18,6 +18,8 @@ class Callback
     public function __construct(
         #[ORM\Column(type: Types::JSON)]
         private ?string $response = null,
+        #[ORM\Column(type: Types::JSON)]
+        private ?string $request = null,
         #[ORM\ManyToOne(
             targetEntity: Invoice::class,
             cascade: ['persist', 'remove'],
@@ -52,5 +54,15 @@ class Callback
     public function setInvoice(?Invoice $invoice): void
     {
         $this->invoice = $invoice;
+    }
+
+    public function getRequest(): ?string
+    {
+        return $this->request;
+    }
+
+    public function setRequest(?string $request): void
+    {
+        $this->request = $request;
     }
 }

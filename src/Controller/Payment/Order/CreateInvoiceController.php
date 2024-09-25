@@ -44,10 +44,12 @@ class CreateInvoiceController extends AbstractController
                 payer: $payer,
                 request: $request
             );
+            $jsonRequest = json_encode($requestBody['body'], JSON_THROW_ON_ERROR);
+            $hash = $this->pspService->signData($jsonRequest);
 
             $requestBody['headers'] = [
                 'Content-Type' => 'application/json',
-                'X-signature' => $this->pspService->signData($invoice->getRequest()),
+                'X-signature' => $hash,
             ];
 
             $response = $this->pspService->postInvoice(requestBody: $requestBody);
@@ -64,7 +66,7 @@ class CreateInvoiceController extends AbstractController
             $jsonResponse = json_encode($response, JSON_THROW_ON_ERROR);
 
             $invoice->setExpirationDate(new DateTimeImmutable("+1 day"));
-            $invoice->setRequest($requestBody);
+            $invoice->setRequest($jsonRequest);
             $invoice->setResponse($jsonResponse);
             $invoice->setOrder($order);
             $invoice->setNotificationUrl($notificationUrl);
