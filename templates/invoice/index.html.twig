@@ -16,6 +16,7 @@
                             <th scope="col">Currency</th>
                             <th scope="col">Created at</th>
                             <th scope="col">Invoice</th>
+                            <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -26,7 +27,16 @@
                                     <td>{{ order.country | country_name }}</td>
                                     <td>{{ order.createdAt | date }}</td>
                                     <td>
-                                        <a href="{{ path('create_invoice', {'id': order.id}) }}">Create invoice</a>
+                                        {% if order.invoice is not null %}
+                                            {{ order.invoice.status.value }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if order.invoice is null %}
+                                            <a href="{{ path('create_invoice', {'id': order.id}) }}">Create invoice</a>
+                                        {% elseif order.invoice.status.value == 'CREATED' %}
+                                            <a href="{{ path('show_invoice', {'id': order.invoice.id}) }}">Show invoice</a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

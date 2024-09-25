@@ -2,17 +2,19 @@
 
 namespace App\Service;
 
+use App\Entity\Invoice;
+use App\Entity\MerchantOrder;
+use App\Enum\InvoiceStatusEnum;
+use App\Repository\MerchantOrderRepository;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Throwable;
 
 readonly class PSPService implements PSPServiceInterface
 {
     public function __construct(
-        private HttpClientInterface $pspClient,
         #[Autowire(env: 'PSP_SECRET_KEY')]
         private string $secretKey,
+        private readonly MerchantOrderRepository $merchantOrderRepository,
     ) {
     }
 
@@ -46,37 +48,75 @@ readonly class PSPService implements PSPServiceInterface
         ];
     }
 
+    public function postCallback(array $request): array
+    {
+        $order = $this->merchantOrderRepository->find($request['body']['merchant_order_id']);
+
+        if (!$order instanceof MerchantOrder) {
+            return [
+                'error' => [
+                    'status_code' => 400,
+                    'error_code' => 1001,
+                    'error' => 'Merchant order does not exists',
+                ],
+                'redirect_url' => '/error/payment/1001',
+            ];
+        }
+        $invoice = $order->getInvoice();
+        if (!$invoice instanceof Invoice) {
+            return [
+                'error' => [
+                    'status_code' => 400,
+                    'error_code' => 1002,
+                    'error' => 'Invoice is not create for merchant order',
+                ],
+                'redirect_url' => '/error/payment/1002',
+            ];
+        }
+        $hash = $this->signData($invoice->getRequest());
+        if ($hash !== $request['headers']['X-signature']) {
+            return [
+                'error' => [
+                    'status_code' => 400,
+                    'error_code' => 1003,
+                    'error' => 'Invalid signature',
+                ],
+                'redirect_url' => '/error/payment/1003',
+            ];
+        }
+        if ($invoice->getStatus() !== InvoiceStatusEnum::CREATED) {
+            return [
+                'error' => [
+                    'status_code' => 400,
+                    'error_code' => 1004,
+                    'error' => 'Invoice already payed',
+                ],
+                'redirect_url' => '/error/payment/1004',
+            ];
+        }
+        if (($order->getAmount() / 100) !== $request['body']['amount']) {
+            return [
+                'error' => [
+                    'status_code' => 400,
+                    'error_code' => 1005,
+                    'error' => 'Amount is not set',
+                ],
+                'redirect_url' => '/error/payment/1005'
+            ];
+        }
+
+
+        return [
+            'success' => [
+                'status_code' => 201,
+                'errorCode' => 2000,
+            ],
+            'redirect_url' => '/success/payment',
+        ];
+    }
+
     public function signData(string $body): string
     {
         return base64_encode(hash_hmac('sha256', $body, $this->secretKey));
-    }
-
-    /**
-     * This is just pseudocode as example of real life request.
-     * As return type we can define anything we want, something that suits us best.
-     * BASE_URL is defined in env(PSP_BASE_URI), and mapped in framework.yaml.
-     */
-    private function exampleOfHttpCall(array $requestBody): array
-    {
-        $body = json_encode($requestBody, JSON_THROW_ON_ERROR);
-        try {
-            $response = $this->pspClient->request(
-                method: 'POST',
-                url: 'invoice',
-                options: [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'X-signature' => $this->signData($body),
-                    ],
-                    'json' => [
-                        '....' => '....'
-                    ],
-                ]
-            );
-            // DO SOMETHING
-        } catch (Throwable $e) {
-            // THROW EXCEPTION
-        }
-        return [];
     }
 }
