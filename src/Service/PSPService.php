@@ -14,7 +14,7 @@ readonly class PSPService implements PSPServiceInterface
     public function __construct(
         #[Autowire(env: 'PSP_SECRET_KEY')]
         private string $secretKey,
-        private readonly MerchantOrderRepository $merchantOrderRepository,
+        private MerchantOrderRepository $merchantOrderRepository,
     ) {
     }
 
@@ -24,6 +24,22 @@ readonly class PSPService implements PSPServiceInterface
     public function postInvoice(string $requestBody): array
     {
         $body = json_decode($requestBody, true, 512, JSON_THROW_ON_ERROR);
+
+        $merchantOrder = $this->merchantOrderRepository->find($body['merchant_order_id']);
+        if (!$merchantOrder instanceof MerchantOrder) {
+            return [
+                'statusCode' => 404,
+                'message' => 'Merchant order not found',
+            ];
+        }
+        $invoice = $merchantOrder->getInvoice();
+        if ($invoice !== null) {
+            return [
+                'statusCode' => 404,
+                'message' => 'Invoice already created',
+            ];
+        }
+
         return [
             'statusCode' => 201,
             'body' => [
