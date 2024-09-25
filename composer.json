@@ -14,6 +14,7 @@
         "fakerphp/faker": "^1.23",
         "gedmo/doctrine-extensions": "^3.16",
         "ramsey/uuid-doctrine": "^2.1",
+        "sonata-project/admin-bundle": "^4.31",
         "symfony/asset": "7.1.*",
         "symfony/asset-mapper": "7.1.*",
         "symfony/console": "7.1.*",
