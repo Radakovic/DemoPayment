@@ -30,6 +30,8 @@ class Invoice
         private ?DateTimeImmutable $expirationDate = null,
         #[ORM\Column(type: 'string', nullable: false, enumType: InvoiceStatusEnum::class)]
         private ?InvoiceStatusEnum $status = null,
+        #[ORM\Column(type: Types::STRING)]
+        private ?string $notificationUrl = null,
         #[ORM\OneToOne(
             targetEntity: MerchantOrder::class,
             mappedBy: 'invoice',
@@ -116,5 +118,15 @@ class Invoice
     public function setOrder(MerchantOrder $order): void
     {
         $this->order = $order;
+    }
+
+    public function getNotificationUrl(): ?string
+    {
+        return $this->notificationUrl;
+    }
+
+    public function setNotificationUrl(?string $notificationUrl): void
+    {
+        $this->notificationUrl = $notificationUrl;
     }
 }

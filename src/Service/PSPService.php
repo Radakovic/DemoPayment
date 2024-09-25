@@ -21,10 +21,6 @@ readonly class PSPService implements PSPServiceInterface
      */
     public function postInvoice(string $requestBody): array
     {
-        $headers = [
-            'Content-Type' => 'application/json',
-            'X-signature' => $this->signData($requestBody),
-        ];
         $body = json_decode($requestBody, true, 512, JSON_THROW_ON_ERROR);
         return [
             "redirect_url" => "https://www.google.com/some_redirect_url",

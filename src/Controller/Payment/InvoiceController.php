@@ -47,6 +47,7 @@ class InvoiceController extends AbstractController
             assert($invoice instanceof Invoice);
             $payer = $form->get('payer')->getData();
 
+            $notificationUrl = sprintf('notification/invoice/%s', $invoice->getId()->toString());
             $requestBody = [
                 "merchant_order_id" => $orderForm->getId()->toString(),
                 "amount" => $orderForm->getAmount() / 100,
@@ -62,7 +63,7 @@ class InvoiceController extends AbstractController
                 "payment_method" => $orderForm->getInvoice()?->getPaymentMethod(),
                 "description" => $orderForm->getInvoice()?->getDescription(),
                 "client_ip" => $request->getClientIp(),
-                "notification_url" => "https://www.your_domain.com/your/notification/url"
+                "notification_url" => $notificationUrl,
             ];
 
             $jsonRequest = json_encode($requestBody, JSON_THROW_ON_ERROR);
@@ -76,6 +77,7 @@ class InvoiceController extends AbstractController
             $invoice->setResponse($jsonResponse);
             $invoice->setOrder($order);
             $invoice->setStatus(InvoiceStatusEnum::CREATED);
+            $invoice->setNotificationUrl($notificationUrl);
 
             $this->entityManager->persist($invoice);
             $this->entityManager->flush();
@@ -98,6 +100,7 @@ class InvoiceController extends AbstractController
             [
                 'invoice' => $invoiceData,
                 'invoiceId' => $invoice->getId(),
+                'notificationUrl' => $invoice->getNotificationUrl(),
             ]
         );
     }

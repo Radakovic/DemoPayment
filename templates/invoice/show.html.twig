@@ -12,7 +12,7 @@
                 <p>Description: {{ invoice.paymentInfo.metadata.description }}</p>
                 <p>Payment method: {{ invoice.paymentInfo.payment_method }}</p>
                 <p>Amount: {{ invoice.paymentInfo.amount | format_currency(invoice.paymentInfo.currency) }}</p>
-                <p>Expiration Date: {{ invoice.paymentInfo.expiration_date.date | date }}</p>
+                <p>Expiration Date: {{ invoice.paymentInfo.expiration_date | date }}</p>
                 <p>Code: {{ invoice.paymentInfo.metadata.code_to_display_or_copy }}</p>
             </div>
             <div class="col">
@@ -20,7 +20,13 @@
             </div>
         </div>
         <div class="row">
-            <a href="{{ path('create_invoice') }}">Back to orders</a>
+            <div class="col">
+                <a href="{{ path('create_invoice') }}">Back to orders</a>
+            </div>
+            <div class="col">
+                <a href="#">Simulate callback</a>
+            </div>
+
         </div>
     </div>
 {% endblock %}
