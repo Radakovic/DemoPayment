@@ -79,7 +79,7 @@ class Invoice
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description = null): void
     {
         $this->description = $description;
     }
@@ -158,5 +158,10 @@ class Invoice
         if ($this->callbacks->contains($callback)) {
             $this->callbacks->removeElement($callback);
         }
+    }
+
+    public function __toString(): string
+    {
+        return $this->id->toString();
     }
 }

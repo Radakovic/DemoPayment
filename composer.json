@@ -15,6 +15,7 @@
         "gedmo/doctrine-extensions": "^3.16",
         "ramsey/uuid-doctrine": "^2.1",
         "sonata-project/admin-bundle": "^4.31",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.17",
         "symfony/asset": "7.1.*",
         "symfony/asset-mapper": "7.1.*",
         "symfony/console": "7.1.*",

@@ -27,4 +27,10 @@ services:
         class: App\Service\PSPService
     App\Service\PSPServiceInterface: '@PSPService'
 
+    admin.invoice:
+        class: App\Admin\InvoiceAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Invoice, manager_type: orm, label: Invoice }
+
+
 
