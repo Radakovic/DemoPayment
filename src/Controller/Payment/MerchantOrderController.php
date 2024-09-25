@@ -61,7 +61,6 @@ class MerchantOrderController extends AbstractController
 
             $jsonResponse = json_encode($response, JSON_THROW_ON_ERROR);
             $invoiceStatus = $response['statusCode'] === 201 ? InvoiceStatusEnum::CREATED : InvoiceStatusEnum::ERROR;
-            //$redirectUrl = $response['body']['redirectUrl'];
 
             $invoice->setExpirationDate(new DateTimeImmutable("+1 day"));
             $invoice->setRequest($requestBody);
