@@ -114,7 +114,7 @@ class Invoice
         $this->expirationDate = $expirationDate;
     }
 
-    public function getStatus(): InvoiceStatusEnum
+    public function getStatus(): ?InvoiceStatusEnum
     {
         return $this->status;
     }

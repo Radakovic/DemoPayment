@@ -21,22 +21,29 @@ readonly class PSPService implements PSPServiceInterface
     /**
      * This is just mocked API call which will return dummy array.
      */
-    public function postInvoice(string $requestBody): array
+    public function postInvoice(array $requestBody): array
     {
-        $body = json_decode($requestBody, true, 512, JSON_THROW_ON_ERROR);
+        $body = json_encode($requestBody['body'], JSON_THROW_ON_ERROR);
+        $hash = $this->signData($body);
 
         $merchantOrder = $this->merchantOrderRepository->find($body['merchant_order_id']);
         if (!$merchantOrder instanceof MerchantOrder) {
             return [
                 'statusCode' => 404,
-                'message' => 'Merchant order not found',
+                'error' => 'Merchant order not found',
             ];
         }
         $invoice = $merchantOrder->getInvoice();
-        if ($invoice !== null) {
+        if ($invoice !== null && $invoice->getStatus() !== null) {
             return [
                 'statusCode' => 404,
-                'message' => 'Invoice already created',
+                'error' => 'Invoice already created',
+            ];
+        }
+        if ($hash !== $requestBody['headers']['X-signature']) {
+            return [
+                'statusCode' => 400,
+                'error' => 'Invalid signature',
             ];
         }
 

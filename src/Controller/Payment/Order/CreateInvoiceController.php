@@ -45,13 +45,18 @@ class CreateInvoiceController extends AbstractController
                 request: $request
             );
 
+            $requestBody['headers'] = [
+                'Content-Type' => 'application/json',
+                'X-signature' => $this->pspService->signData($invoice->getRequest()),
+            ];
+
             $response = $this->pspService->postInvoice(requestBody: $requestBody);
 
             if ($response['statusCode'] !== 201) {
                 return $this->render(
                     'invoice/invoice_not_created.html.twig',
                     [
-                        'error_message' => $response['message']
+                        'error_message' => $response['error']
                     ]
                 );
             }
@@ -79,25 +84,27 @@ class CreateInvoiceController extends AbstractController
     {
         $notificationUrl = sprintf('notification/invoice/%s', $invoice->getId()->toString());
         $requestBody = [
-            "merchant_order_id" => $order->getId()->toString(),
-            "amount" => $order->getAmount() / 100,
-            "country" => $order->getCountry(),
-            "currency" => $order->getCurrency(),
-            "payer" => [
-                "document" => $payer['document'],
-                "first_name" => $payer['firstName'],
-                "last_name" => $payer['lastName'],
-                "phone" => $payer['phone'],
-                "email" => $payer['email'],
+            'body' => [
+                "merchant_order_id" => $order->getId()->toString(),
+                "amount" => $order->getAmount() / 100,
+                "country" => $order->getCountry(),
+                "currency" => $order->getCurrency(),
+                "payer" => [
+                    "document" => $payer['document'],
+                    "first_name" => $payer['firstName'],
+                    "last_name" => $payer['lastName'],
+                    "phone" => $payer['phone'],
+                    "email" => $payer['email'],
+                ],
+                "payment_method" => $order->getInvoice()?->getPaymentMethod(),
+                "description" => $order->getInvoice()?->getDescription(),
+                "client_ip" => $request->getClientIp(),
+                "notification_url" => $notificationUrl,
             ],
-            "payment_method" => $order->getInvoice()?->getPaymentMethod(),
-            "description" => $order->getInvoice()?->getDescription(),
-            "client_ip" => $request->getClientIp(),
-            "notification_url" => $notificationUrl,
         ];
 
         return [
-            json_encode($requestBody, JSON_THROW_ON_ERROR),
+            $requestBody,
             $notificationUrl
         ];
     }
