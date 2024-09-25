@@ -38,6 +38,9 @@ class InvoiceAdmin extends AbstractAdmin
         $show->add('expirationDate');
         $show->add('createdAt');
         $show->add('description');
+        $show->add(name: 'callbacks', fieldDescriptionOptions: [
+            'template' => 'admin/invoice/show__invoice_callbacks_list.html.twig'
+        ]);
     }
     protected function configureFormFields(FormMapper $form): void
     {

@@ -6,7 +6,7 @@
     <p>Merchant order: {{ list.merchant_order_id }}</p>
     <p>Amount: {{ list.amount | format_currency(list.currency, {fraction_digit: 2}) }}</p>
     <p>Country: {{ list.country }}</p>
-    <h4>Payer</h4>
+    <h4 style="font-weight: bold">Payer</h4>
     <p>Name: {{ list.payer.first_name }} {{ list.payer.last_name }}</p>
     <p>Phone: {{ list.payer.phone }}</p>
     <p>Email: {{ list.payer.email }}</p>

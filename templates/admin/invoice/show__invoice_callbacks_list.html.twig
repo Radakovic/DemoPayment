@@ -1,0 +1,17 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.callbacks is defined%}
+        <ul>
+            {% for callback in object.callbacks %}
+                {% set response = jsonDecode(callback.response) %}
+                <li>
+                    <a href={{ path('admin_app_callback_show', {id: callback.id}) }}>{{ callback.id }}</a>
+                    <span class="{{ response.status_code == 201 ? 'alert-success' : 'alert-danger' }}" style="padding: 0 10px">
+                        {{ response.status_code == 201 ? 'Success' : 'Error' }}
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

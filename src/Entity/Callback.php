@@ -65,4 +65,9 @@ class Callback
     {
         $this->request = $request;
     }
+
+    public function __toString(): string
+    {
+        return $this->id->toString();
+    }
 }

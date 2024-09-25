@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% set list = jsonDecode(value) %}
+
+    {% if list.status_code == 201 %}
+        <span class="alert-success">Success: status code {{ list.status_code }}</span>
+    {% else %}
+        <span class="alert-danger">Error: status code {{ list.status_code }}</span>
+        <p>Message: {{ list.error.error }}</p>
+    {% endif %}
+{% endblock %}

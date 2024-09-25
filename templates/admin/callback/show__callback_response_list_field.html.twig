@@ -1,0 +1,9 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% set response = jsonDecode(value) %}
+
+    <p class="{{ response.status_code == 201 ? 'alert-success' : 'alert-danger' }}" style="text-align: center">
+        {{ response.status_code == 201 ? 'Success' : 'Error' }}
+    </p>
+{% endblock %}

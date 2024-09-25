@@ -31,6 +31,10 @@ services:
         class: App\Admin\InvoiceAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\Invoice, manager_type: orm, label: Invoice }
+    admin.callback:
+        class: App\Admin\CallbackAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Callback, manager_type: orm, label: Callback }
 
 
 
