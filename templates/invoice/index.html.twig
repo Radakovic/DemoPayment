@@ -34,7 +34,7 @@
                                     <td>
                                         {% if order.invoice is null %}
                                             <a href="{{ path('create_invoice', {'id': order.id}) }}">Create invoice</a>
-                                        {% elseif order.invoice.status.value == 'CREATED' %}
+                                        {% else %}
                                             <a href="{{ path('show_invoice', {'id': order.invoice.id}) }}">Show invoice</a>
                                         {% endif %}
                                     </td>
