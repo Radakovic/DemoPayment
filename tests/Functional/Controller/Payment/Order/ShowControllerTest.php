@@ -6,6 +6,7 @@ use App\Entity\MerchantOrder;
 use App\Faker\Factory\MerchantOrderFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ShowControllerTest extends WebTestCase
 {
@@ -27,8 +28,26 @@ class ShowControllerTest extends WebTestCase
         $order = $this->createOrder();
         $url = sprintf('/orders/invoices/%s', $order->getId()->toString());
         $crawler = $this->client->request('GET', $url);
-        self::assertResponseIsSuccessful();
+        $this->assertCorrectPage($order, $crawler);
+    }
 
+    public function testSubmitForm(): void
+    {
+        $order = $this->createOrder();
+        $url = sprintf('/orders/invoices/%s', $order->getId()->toString());
+        $crawler = $this->client->request('GET', $url);
+        $this->assertCorrectPage($order, $crawler);
+
+        $form = $crawler->selectButton('Submit')->form();
+
+        $values = $form->getValues();
+
+        $dsad= 'dasdsa';
+    }
+
+    private function assertCorrectPage(MerchantOrder $order, Crawler $crawler): void
+    {
+        self::assertResponseIsSuccessful();
         $h1 = $crawler->filter('h1')->text();
         $amount = $crawler->filter("input[name=merchant_order\[amount\]]")->attr('value');
 
