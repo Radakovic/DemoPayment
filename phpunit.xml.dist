@@ -31,6 +31,7 @@
             <file>src/Kernel.php</file>
             <directory>src/DataFixtures</directory>
             <directory>src/Doctrine</directory>
+            <directory>src/Repository</directory>
             <directory>src/Faker</directory>
             <directory>src/Test</directory>
         </exclude>
