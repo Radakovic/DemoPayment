@@ -29,8 +29,6 @@
         </include>
         <exclude>
             <file>src/Kernel.php</file>
-            <file>src/Command/UploadMiscellaneousFilesCommand.php</file>
-            <directory>src/Resources</directory>
             <directory>src/DataFixtures</directory>
             <directory>src/Faker</directory>
             <directory>src/Test</directory>
