@@ -1,7 +1,8 @@
 <?php
 
-namespace App\DataFixtures\Factory;
+namespace App\Faker\Factory;
 
+use App\DataFixtures\Factory\AbstractFactory;
 use App\Entity\MerchantOrder;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -25,5 +26,10 @@ class MerchantOrderFactory extends AbstractFactory
             currency: $currency,
             id: $id
         );
+    }
+
+    public function getEntity(): string
+    {
+        return MerchantOrder::class;
     }
 }

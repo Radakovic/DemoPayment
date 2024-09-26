@@ -36,5 +36,10 @@ services:
         tags:
             - { name: sonata.admin, model_class: App\Entity\Callback, manager_type: orm, label: Callback }
 
+    App\Faker\Factory\:
+        resource: '%kernel.project_dir%/src/Faker/Factory'
+        tags: [ { name: faker.factory } ]
+        arguments:
+            $factories: !tagged_iterator faker.factory
 
 

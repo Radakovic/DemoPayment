@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\Factory\MerchantOrderFactory;
+use App\Faker\Factory\MerchantOrderFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,6 +18,9 @@ class MerchantOrderFixtures extends Fixture
 
         for ($i = 0; $i < 10; ++$i) {
             $order = $factory();
+
+            $this->addReference('merchant_order_' . $i, $order);
+
             $manager->persist($order);
         }
 
