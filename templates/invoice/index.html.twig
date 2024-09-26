@@ -5,21 +5,22 @@
         <div class="row mb-4 mt-4">
             <h1>Merchant orders</h1>
         </div>
-        <div class="row">
-            <div class="col">
-                <ul class="list-group">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Currency</th>
-                            <th scope="col">Created at</th>
-                            <th scope="col">Invoice</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+        {% if orders is not empty %}
+            <div class="row">
+                <div class="col">
+                    <ul class="list-group">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Currency</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Invoice</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             {% for order in orders %}
                                 <tr>
                                     <td>{{ loop.index }}</td>
@@ -40,10 +41,11 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                </ul>
+                            </tbody>
+                        </table>
+                    </ul>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}
