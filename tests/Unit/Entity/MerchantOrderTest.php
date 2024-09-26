@@ -31,4 +31,25 @@ class MerchantOrderTest extends TestCase
         $this->assertSame($invoice, $merchantOrder->getInvoice());
         $this->assertSame($id, $merchantOrder->getId());
     }
+
+    public function testSetMethods(): void
+    {
+        $id = Uuid::uuid4();
+        $currency = 'EUR';
+        $country = 'FR';
+        $amount = 100;
+        $invoice = $this->createMock(Invoice::class);
+
+        $merchantOrder = new MerchantOrder(id: $id);
+        $merchantOrder->setAmount($amount);
+        $merchantOrder->setCurrency($currency);
+        $merchantOrder->setCountry($country);
+        $merchantOrder->setInvoice($invoice);
+
+        $this->assertSame($amount, $merchantOrder->getAmount());
+        $this->assertSame($currency, $merchantOrder->getCurrency());
+        $this->assertSame($country, $merchantOrder->getCountry());
+        $this->assertSame($invoice, $merchantOrder->getInvoice());
+        $this->assertSame($id, $merchantOrder->getId());
+    }
 }
