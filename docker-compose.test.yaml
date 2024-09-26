@@ -1,0 +1,41 @@
+services:
+    postgres:
+        image: postgres:${POSTGRES_VERSION:-16}-alpine
+        ports:
+            - "127.0.0.2:5432:5432"
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-postgres}
+            # You should definitely change the password in production
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+            POSTGRES_USER: ${POSTGRES_USER:-postgres}
+#        healthcheck:
+#            test: [ "CMD", "pg_isready", "-d", "${POSTGRES_DB:-postgres}", "-U", "${POSTGRES_USER:-postgres}" ]
+#            timeout: 5s
+#            retries: 5
+#            start_period: 60s
+        volumes:
+            - database_data:/var/lib/postgresql/data:rw
+        networks:
+            app-network:
+    php:
+        build:
+            context: .
+            dockerfile: ./.server/docker/Dockerfile
+        volumes:
+            - ./:/app
+            - ./vendor:/app/vendor
+            - ./var:/app/var
+        working_dir: /app
+#        depends_on:
+#            postgres:
+#                condition: service_healthy
+        user: 1000:1000
+        networks:
+            app-network:
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+networks:
+    app-network:
+
+volumes:
+    database_data:
