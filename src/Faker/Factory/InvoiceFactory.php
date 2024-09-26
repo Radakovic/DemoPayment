@@ -61,23 +61,21 @@ class InvoiceFactory extends AbstractFactory
     private function createJsonRequest(MerchantOrder $order, string $notificationUrl): string
     {
         $requestBody = [
-            'body' => [
-                "merchant_order_id" => $order->getId()->toString(),
-                "amount" => $order->getAmount() / 100,
-                "country" => $order->getCountry(),
-                "currency" => $order->getCurrency(),
-                "payer" => [
-                    "document" => $this->faker->uuid(),
-                    "first_name" => $this->faker->firstName(),
-                    "last_name" => $this->faker->lastName(),
-                    "phone" => $this->faker->phoneNumber(),
-                    "email" => $this->faker->email(),
-                ],
-                "payment_method" => $order->getInvoice()?->getPaymentMethod(),
-                "description" => $order->getInvoice()?->getDescription(),
-                "client_ip" => $this->faker->ipv4(),
-                "notification_url" => $notificationUrl,
+            "merchant_order_id" => $order->getId()->toString(),
+            "amount" => $order->getAmount() / 100,
+            "country" => $order->getCountry(),
+            "currency" => $order->getCurrency(),
+            "payer" => [
+                "document" => $this->faker->uuid(),
+                "first_name" => $this->faker->firstName(),
+                "last_name" => $this->faker->lastName(),
+                "phone" => $this->faker->phoneNumber(),
+                "email" => $this->faker->email(),
             ],
+            "payment_method" => $order->getInvoice()?->getPaymentMethod(),
+            "description" => $order->getInvoice()?->getDescription(),
+            "client_ip" => $this->faker->ipv4(),
+            "notification_url" => $notificationUrl,
         ];
 
         return json_encode($requestBody, JSON_THROW_ON_ERROR);
