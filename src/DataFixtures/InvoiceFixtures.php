@@ -25,6 +25,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             );
             $this->addReference("invoice_$i", $invoice);
 
+            $order->setInvoice($invoice);
             $manager->persist($invoice);
         }
         $manager->flush();

@@ -28,7 +28,7 @@ abstract class AbstractFactory
     }
 
     abstract public function getEntity(): string;
-    abstract public function __invoke();
+    abstract public function __invoke(): object;
 
     /**
      * Helper method which retrieves a factory based on the given namespace.
@@ -49,7 +49,7 @@ abstract class AbstractFactory
     /**
      * Create an entity of the given namespace.
      */
-    protected function createEntityIfNotExists(string $entityNamespace, $entity = null)
+    protected function createEntityIfNotExists(string $entityNamespace, $entity = null): mixed
     {
         if ($entity === null) {
             $entityFactory = $this->getOtherFactory($entityNamespace);
