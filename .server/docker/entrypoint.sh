@@ -11,6 +11,7 @@ if [ ! -d "vendor" ] || [ -z "$(ls -A vendor)" ]; then
 else
     echo "Composer vendor directory already exists and is not empty."
 fi
+# Install Bootstrap and other assets, only if assets/vendor folder is empty or does not exists
 if [ ! -d "assets/vendor" ] || [ -z "$(ls -A assets/vendor)" ]; then
     echo "######################################"
     echo "Installing Assets dependencies..."
@@ -18,6 +19,15 @@ if [ ! -d "assets/vendor" ] || [ -z "$(ls -A assets/vendor)" ]; then
     php bin/console importmap:install
 else
     echo "Assets vendor directory already exists and is not empty."
+fi
+# Install Sonata Admin assets if public/assets folder is empty or does not exists
+if [ ! -d "public/assets" ] || [ -z "$(ls -A public/assets)" ]; then
+    echo "######################################"
+    echo "Installing Sonata Admin Assets ..."
+    echo "######################################"
+    php bin/console asset-map:compile
+else
+    echo "Sonata admin assets already installed."
 fi
 
     echo "######################################"
