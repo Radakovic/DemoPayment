@@ -23,8 +23,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-#    PSPService:
-#        class: App\Service\PSPService
     App\Service\PSPServiceInterface: '@App\Service\PSPService'
 
     admin.invoice:
@@ -41,5 +39,11 @@ services:
         tags: [ { name: faker.factory } ]
         arguments:
             $factories: !tagged_iterator faker.factory
+
+    App\Faker\Factory\MerchantOrderFactory:
+        tags: [ faker.factory ]
+        arguments:
+            $factories: !tagged_iterator faker.factory
+
 
 
