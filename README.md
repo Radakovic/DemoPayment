@@ -33,3 +33,7 @@ Database:
 - database name: postgres
 - user: postgres
 - pass: postgres
+
+Tests can be executed in couple ways:
+- `docker compose exec php vendor/bin/phpunit` - (it will throw couple deprecation notices - didnt want to waste time on that)
+- `docker compose exec php vendor/bin/paratest` - it will speed up execution of tests can be used in larger projects with high number of tests
