@@ -24,7 +24,7 @@ class CallbackFixtures extends Fixture implements DependentFixtureInterface
             if (!$this->shouldCreateCallbacks($invoice->getStatus())) {
                 continue;
             }
-            $callback = $factory(invoice: $invoice);
+            $callback = $factory(invoice: $invoice, order: $invoice->getOrder());
             $invoice->addCallback($callback);
 
             $manager->persist($callback);

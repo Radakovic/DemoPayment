@@ -22,11 +22,13 @@ class CallbackFactory extends AbstractFactory
         ?string $request = null,
         ?Invoice $invoice = null,
         ?UuidInterface $id = null,
+        ?MerchantOrder $order = null,
     ): Callback {
         $id = $id ?? Uuid::uuid4();
         $invoice = $invoice ?? $this->createEntityIfNotExists(Invoice::class);
+        $order = $order ?? $this->createEntityIfNotExists(MerchantOrder::class);
+
         $invoice->setStatus(InvoiceStatusEnum::SUCCESSFUL);
-        $order = $this->createEntityIfNotExists(MerchantOrder::class);
         $invoice->setOrder($order);
         $order->setInvoice($invoice);
 
