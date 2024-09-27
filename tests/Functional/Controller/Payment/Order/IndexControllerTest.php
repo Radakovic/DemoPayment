@@ -4,12 +4,14 @@ namespace App\Tests\Functional\Controller\Payment\Order;
 
 use App\Faker\Factory\MerchantOrderFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class IndexControllerTest extends WebTestCase
 {
     private MerchantOrderFactory $orderFactory;
     private EntityManagerInterface $entityManager;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {

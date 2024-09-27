@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ShowController extends AbstractController
 {
-    #[Route('/orders/{id}', name: 'show_invoice', methods: ['GET'])]
+    #[Route('/invoices/{id}', name: 'show_invoice', methods: ['GET'])]
     public function __invoke(Invoice $invoice): Response
     {
         $invoiceData = json_decode($invoice->getResponse(), true);

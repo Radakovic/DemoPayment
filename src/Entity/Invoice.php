@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(schema: 'payment')]
 #[Gedmo\SoftDeleteable(hardDelete: false)]
@@ -25,6 +26,7 @@ class Invoice
 
     public function __construct(
         #[ORM\Column(type: Types::STRING)]
+        #[Assert\NotBlank]
         private ?string $paymentMethod = null,
         #[ORM\Column(type: Types::JSON)]
         private ?string $request = null,

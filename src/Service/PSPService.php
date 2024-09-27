@@ -9,12 +9,12 @@ use App\Repository\MerchantOrderRepository;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-readonly class PSPService implements PSPServiceInterface
+class PSPService implements PSPServiceInterface
 {
     public function __construct(
         #[Autowire(env: 'PSP_SECRET_KEY')]
-        private string $secretKey,
-        private MerchantOrderRepository $merchantOrderRepository,
+        private readonly string                  $secretKey,
+        private readonly MerchantOrderRepository $merchantOrderRepository,
     ) {
     }
 
