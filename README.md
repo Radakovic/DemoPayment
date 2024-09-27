@@ -22,9 +22,9 @@ When you first time run `dcu` it will take some time, next time will be faster.
 Docker will automatically execute:
 - `composer install --prefer-dist --no-scripts --no-interaction` install required bundles
 - `php bin/console doctrine:migrations:migrate -n` create database tables
-- `php bin/console doctrine:fixtures:load -n` load fixture data
-- `php bin/console importmap:install` install bootstrap dependencies
-- `php bin/console asset-map:compile` install sonata admin dependencies
+- `php bin/console doctrine:fixtures:load -n` load fixture data to database
+- `php bin/console importmap:install` install all FE assets
+- `php bin/console asset-map:compile` compile all assets to the public directory
 
 
 
