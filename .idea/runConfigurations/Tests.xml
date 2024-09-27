@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="php" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <TestRunner configuration_file="/app/phpunit.xml.dist" coverage_engine="PCov" directory="$PROJECT_DIR$/tests" paratest_binary_path="$PROJECT_DIR$/vendor/bin/paratest_for_phpstorm" use_paratest="true" />
+    <method v="2" />
+  </configuration>
+</component>

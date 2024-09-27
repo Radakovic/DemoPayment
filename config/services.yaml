@@ -22,3 +22,32 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\PSPServiceInterface: '@App\Service\PSPService'
+
+    admin.invoice:
+        class: App\Admin\InvoiceAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Invoice, manager_type: orm, label: Invoice }
+    admin.callback:
+        class: App\Admin\CallbackAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Callback, manager_type: orm, label: Callback }
+
+    App\Faker\Factory\MerchantOrderFactory:
+        tags: [ faker.factory ]
+        arguments:
+            $factories: !tagged_iterator faker.factory
+
+    App\Faker\Factory\InvoiceFactory:
+        tags: [ faker.factory ]
+        arguments:
+            $factories: !tagged_iterator faker.factory
+
+    App\Faker\Factory\CallbackFactory:
+        tags: [ faker.factory ]
+        arguments:
+            $factories: !tagged_iterator faker.factory
+
+
+

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-4 mt-4">
+            <h1>Invoice No: {{ invoiceId }}</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>Payment info</h3>
+                <p>Order ID: {{ invoice.merchant_order_id }}</p>
+                <p>Description: {{ invoice.payment_info.metadata.description }}</p>
+                <p>Payment method: {{ invoice.payment_info.payment_method }}</p>
+                <p>Amount: {{ invoice.payment_info.amount | format_currency(invoice.payment_info.currency, {fraction_digit: 2}) }}</p>
+                <p>Expiration Date: {{ invoice.payment_info.expiration_date | date }}</p>
+                <p>Code: {{ invoice.payment_info.metadata.code_to_display_or_copy }}</p>
+            </div>
+            <div class="col">
+                <img id="img.base-64" src="{{ invoice.payment_info.metadata.qr_code }}"  alt="qr code"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="{{ path('merchant_order_index') }}">Back to orders</a>
+            </div>
+            <div class="col">
+                <a href="{{ path('simulation', {'id': invoice.merchant_order_id }) }}">Simulate callback</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

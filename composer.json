@@ -11,20 +11,37 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.2",
+        "fakerphp/faker": "^1.23",
+        "gedmo/doctrine-extensions": "^3.16",
+        "ramsey/uuid-doctrine": "^2.1",
+        "sonata-project/admin-bundle": "^4.31",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.17",
+        "symfony/asset": "7.1.*",
+        "symfony/asset-mapper": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
+        "symfony/form": "7.1.*",
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/serializer": "7.1.*",
+        "symfony/twig-bundle": "7.1.*",
+        "symfony/yaml": "7.1.*",
+        "twig/extra-bundle": "^3.13",
+        "twig/intl-extra": "^3.13",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.11",
+        "dama/doctrine-test-bundle": "^8.2",
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "7.1.*",
         "symfony/css-selector": "7.1.*",
         "symfony/maker-bundle": "^1.61",
-        "symfony/phpunit-bridge": "^7.1"
+        "symfony/phpunit-bridge": "^7.1",
+        "symfony/stopwatch": "7.1.*",
+        "symfony/web-profiler-bundle": "7.1.*"
     },
     "config": {
         "allow-plugins": {
@@ -57,7 +74,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts",

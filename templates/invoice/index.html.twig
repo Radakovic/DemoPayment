@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-4 mt-4">
+            <h1>Merchant orders</h1>
+        </div>
+        {% if orders is not empty %}
+            <div class="row">
+                <div class="col">
+                    <ul class="list-group">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Currency</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Invoice</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ (order.amount / 100) | format_currency(order.currency, {fraction_digit: 2}) }}</td>
+                                    <td>{{ order.country | country_name }}</td>
+                                    <td>{{ order.createdAt | date }}</td>
+                                    <td>
+                                        {% if order.invoice is not null %}
+                                            {{ order.invoice.status.value }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if order.invoice is null %}
+                                            <a href="{{ path('create_invoice', {'id': order.id}) }}">Create invoice</a>
+                                        {% else %}
+                                            <a href="{{ path('show_invoice', {'id': order.invoice.id}) }}">Show invoice</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

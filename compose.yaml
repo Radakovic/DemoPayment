@@ -8,9 +8,13 @@ services:
             - ./vendor:/app/vendor
             - ./var:/app/var
         working_dir: /app
+        depends_on:
+            postgres:
+                condition: service_healthy
         networks:
             app-network:
-
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     nginx:
         image: nginx:alpine
         ports:
@@ -22,8 +26,8 @@ services:
             - php
         networks:
             app-network:
-
-###> doctrine/doctrine-bundle ###
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     postgres:
         image: postgres:${POSTGRES_VERSION:-16}-alpine
         ports:
@@ -42,9 +46,6 @@ services:
           - database_data:/var/lib/postgresql/data:rw
         networks:
             app-network:
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
 
 networks:
     app-network:

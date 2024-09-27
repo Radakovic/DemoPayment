@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% set list = jsonDecode(value) %}
+
+    <p>Merchant order: {{ list.body.merchant_order_id }}</p>
+    <p>Amount: {{ list.body.amount }}</p>
+    <p>Currency: {{ list.body.currency }}</p>
+{% endblock %}
+
+

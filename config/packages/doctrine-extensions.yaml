@@ -1,0 +1,22 @@
+services:
+    attribute_reader:
+        class: Gedmo\Mapping\Driver\AttributeReader
+
+    # Gedmo Soft Deleteable Extension listener
+    gedmo.listener.soft_deleteable:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        tags:
+            - { name: doctrine.event_listener, event: 'loadClassMetadata' }
+            - { name: doctrine.event_listener, event: 'onFlush' }
+        calls:
+            - [ setAnnotationReader, [ "@attribute_reader" ] ]
+
+    # Gedmo Timestampable Extension Listener
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_listener, event: 'prePersist' }
+            - { name: doctrine.event_listener, event: 'onFlush' }
+            - { name: doctrine.event_listener, event: 'loadClassMetadata' }
+        calls:
+            - [ setAnnotationReader, [ '@attribute_reader' ] ]
