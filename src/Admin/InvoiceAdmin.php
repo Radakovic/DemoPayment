@@ -5,12 +5,8 @@ namespace App\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InvoiceAdmin extends AbstractAdmin
 {
@@ -42,24 +38,6 @@ class InvoiceAdmin extends AbstractAdmin
             'template' => 'admin/invoice/show__invoice_callbacks_list.html.twig'
         ]);
     }
-    protected function configureFormFields(FormMapper $form): void
-    {
-        $form->add(name: 'paymentMethod', type: ChoiceType::class, options: [
-            'choices'  => [
-                'Method 1' => 'METHOD 1',
-                'Method 2' => 'METHOD 2',
-                'Method 3' => 'METHOD 3',
-            ],
-            'constraints' => [new NotBlank()],
-        ]);
-        $form->add(name: 'description', type: TextareaType::class, options: [
-            'label' => 'Invoice description',
-            'required' => false,
-            'attr' => [
-                'rows' => 5,
-            ],
-        ]);
-    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -70,5 +48,6 @@ class InvoiceAdmin extends AbstractAdmin
     {
         $collection->remove('delete');
         $collection->remove('create');
+        $collection->remove('edit');
     }
 }

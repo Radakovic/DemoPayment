@@ -25,6 +25,9 @@ class CallbackFactory extends AbstractFactory
     ): Callback {
         $id = $id ?? Uuid::uuid4();
         $invoice = $invoice ?? $this->createEntityIfNotExists(Invoice::class);
+        $order = $this->createEntityIfNotExists(MerchantOrder::class);
+        $invoice->setOrder($order);
+        $order->setInvoice($invoice);
 
         $request = $request ?? $this->createJsonRequest($invoice->getOrder());
         $response = $response ?? $this->createJsonResponse($invoice);
