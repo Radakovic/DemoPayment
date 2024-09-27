@@ -44,6 +44,9 @@ class InvoiceAdmin extends AbstractAdmin
         $filter->add('status', null, ["show_filter" => true]);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');

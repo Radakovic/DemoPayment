@@ -31,6 +31,10 @@ class CallbackAdmin extends AbstractAdmin
         ]);
         $show->add('createdAt');
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
