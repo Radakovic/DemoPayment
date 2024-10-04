@@ -6,7 +6,7 @@ ARG USER
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 # Install system dependencies for PHP extensions
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions amqp bcmath gd intl opcache pdo_mysql pdo_pgsql sockets xsl zip xdebug pcov
+    install-php-extensions amqp bcmath gd intl opcache pdo_mysql pdo_pgsql sockets xsl zip xdebug pcov redis
 
 RUN docker-php-ext-enable xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
