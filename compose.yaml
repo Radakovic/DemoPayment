@@ -47,6 +47,13 @@ services:
         networks:
             app-network:
 
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        environment:
+            REDIS_HOST: cache
+            REDIS_PORT: ${REDIS_PORT}
 networks:
     app-network:
         #driver: bridge
